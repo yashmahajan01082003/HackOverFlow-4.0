@@ -1,0 +1,9 @@
+opencv-python
+picamera2
+speechrecognition
+requests
+groq
+pytesseract
+python-dotenv
+numpy
+
