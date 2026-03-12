@@ -1,0 +1,42 @@
+[
+  {
+    "source": "home",
+    "destination": "office",
+    "path": [
+      {
+        "action": "walk",
+        "duration": 5
+      },
+      {
+        "action": "left"
+      },
+      {
+        "action": "walk",
+        "duration": 10
+      },
+      {
+        "action": "right"
+      }
+    ]
+  },
+  {
+    "source": "office",
+    "destination": "home",
+    "path": [
+      {
+        "action": "walk",
+        "duration": 10
+      },
+      {
+        "action": "left"
+      },
+      {
+        "action": "walk",
+        "duration": 20
+      },
+      {
+        "action": "right"
+      }
+    ]
+  }
+]

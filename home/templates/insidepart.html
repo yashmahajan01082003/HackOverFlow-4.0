@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Manager</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #343a40; /* Set dark background color */
+      color: #f8f9fa; /* Set text color to light */
+      cursor: url('/media/wallpaper/cursor.png'), auto;
+    }
+
+    .navbar-dark {
+      background-color: #000; /* Set completely black background color for the navbar */
+    }
+
+    .folder {
+      width: 100%; /* Set the width to 100% */
+      width: 250px; /* Set maximum width for larger screens */
+      height: 150px; /* Set a fixed height for the folders */
+      padding: 30px;
+      border: 1px solid #444; /* Update border color to a darker shade */
+      background-color: #212529; /* Set dark background color for the folders */
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 10px; /* Set margin for the folders */
+      border-radius: 10px; /* Increase border-radius for folders */
+      transition: background-color 2s;
+    }
+
+    .folder:hover {
+      background-color: #343a40; /* Darken the folder on hover */
+    }
+
+    .folder img {
+      width: 60px; /* Updated to reduce the size */
+      height: 60px; /* Updated to reduce the size */
+      margin-bottom: 10px;
+      transition: transform 2s;
+    }
+
+    .folder:hover img {
+      transform: scale(2); /* Scale the icon on hover */
+    }
+
+    .folder-name {
+      font-weight: bold;
+      color: #f8f9fa; /* Set text color to light */
+      overflow: hidden;
+      font-size : 13px;
+      padding: 10px;
+      word-wrap: break-word; /* Add word-wrap property for text wrapping */
+      max-height: 3.6em; /* Limit the maximum height for the folder name */
+      line-height: 1.2em; /* Set line-height for better readability */
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .col-md-3 {
+      padding: 10px; /* Apply padding to each column to create equal margins */
+    }
+
+    .breadcrumb {
+      background-color: transparent;
+      padding: 8px 0;
+      margin-bottom: 20px;
+      list-style: none;
+      border-radius: 5px; /* Add border-radius to breadcrumbs */
+    }
+
+    .breadcrumb-item {
+      display: inline-block;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '/';
+      position: absolute;
+      right: -5px;
+      color: #777;
+    }
+
+    .breadcrumb-item:hover {
+      text-decoration: underline;
+    }
+
+    .breadcrumb-item.active {
+      color: #777;
+      font-weight: bold;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 20px; /* Increase margin top for the sidebar */
+      left: 20px; /* Increase margin left for the sidebar */
+      bottom: 20px; /* Increase margin bottom for the sidebar */
+      width: 250px;
+      padding-top: 20px;
+      background-color: #000; /* Set completely black background color for the sidebar */
+      border-radius: 15px; /* Increase border-radius for the sidebar */
+      margin-right: 30px; /* Add margin right for the sidebar */
+    }
+
+    .sidebar-link {
+      color: #f8f9fa; /* Set text color to light */
+      text-decoration: none;
+      padding: 10px;
+      display: block;
+    }
+
+    .sidebar-link:hover {
+      background-color: #f8f9fa; /* Set light background color on hover */
+      color: #343a40; /* Set text color to dark on hover */
+    }
+
+    .breadcrumb-item a {
+      color: #fff; /* Set breadcrumb link color to white */
+      text-decoration: none;
+    }
+
+      #top-navbar {
+      position: fixed;
+      top: 10px;
+      left: 300px;
+      right: 30px;
+      height: 30px;
+      background-color: rgba(0, 0, 0, 0.8); /* Translucent white color */
+      border-radius: 15px; /* Add border radius */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 12px;
+      z-index: 999;
+      cursor: url('/media/wallpaper/cursor.png'), auto;
+    }
+
+    .navbar-menu {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-menu-item {
+      margin-right: 10px;
+      color: white;
+    }
+
+    .datetime-container {
+      display: flex;
+      align-items: center;
+      border-right: 1px solid white;
+      padding-right: 10px;
+    }
+
+    .date,
+    .time {
+      padding: 0 5px;
+    }
+
+    .popup-list {
+      display: flex;
+      align-items: center;
+    }
+
+    .popup-list-item {
+      color: white;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+
+    #top-navbar .navbar-menu {
+      display: flex;
+      align-items: center;
+    }
+
+    #top-navbar .navbar-menu-item {
+      margin-right: 10px;
+      color: white;
+    }
+
+    #top-navbar .datetime-container {
+      display: flex;
+      align-items: center;
+      border-right: 1px solid white;
+      padding-right: 10px;
+    }
+
+    #top-navbar .date,
+    #top-navbar .time {
+      padding: 0 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="top-navbar">
+
+
+    <div class="navbar-menu" style="justify-content : center; align-items: center;">
+      <div class="navbar-menu-item">Battery Power: {{perc}}%  |</div>
+    </div>
+    <div class="navbar-menu" style="justify-content : center; align-items: center;">
+      <div class="navbar-menu-item">Battery Status: {{status}} |</div>
+    </div>
+  <!-- Taskbar code omitted for brevity -->
+
+  <div class="navbar-menu" style="justify-content: center; align-items: center;">
+  <select id="New1" style="color: white; background-color: rgba(0, 0, 0, 0.8);">
+    <option value="option1">New</option>
+    <option value="option2">New Folder</option>
+    <option value="option3">New File</option>
+  </select>
+</div>
+
+<form action="{% url 'newD2' fName0=root%}" id="form1" method="get" style="display: none; color:white; background-color: rgba(0, 0, 0, 0.8); border-radius:10px; padding:10px;">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" style="color:white; background-color: rgba(0, 0, 0, 0.8); border-radius:10px;" required>
+  <input type="text" id="flag" name="flag" style="display:none;">
+  <br><br>
+  <input type="submit" style="border-radius:10px;" value="Submit">
+</form>
+
+<script>
+  // Function to toggle the visibility and position of the form
+  function toggleFormVisibility() {
+    var form = document.getElementById('form1');
+    var select = document.getElementById('New1');
+
+    if (select.value === 'option2') {
+      form.style.display = 'block'; // Show the form
+      document.getElementById("flag").value = "2";
+      form.style.marginTop = '120px'; // Adjust the margin to position the form below "New Folder"
+    }
+     else if (select.value === 'option3') {
+      form.style.display = 'block'; // Show the form
+      document.getElementById("flag").value = "3";
+      form.style.marginTop = '120px'; // Adjust the margin to position the form below "New Folder"
+    }
+     else {
+      form.style.display = 'none'; // Hide the form
+      form.style.marginTop = '10px'; // Reset the margin when the form is hidden
+    }
+  }
+
+  // Add event listener to the select element
+  document.getElementById('New1').addEventListener('change', toggleFormVisibility);
+</script>
+
+ <div class="navbar-menu" style="justify-content : center; align-items: center;">
+
+
+  <!-- Add any other elements or content here -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+  </script>
+
+    </div>
+
+    <div class="navbar-menu">
+      <div class="datetime-container">
+        <div class="date" id="date"></div>
+        <div class="time" id="time"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <a class="sidebar-link" href="{% url 'index' %}">Desktop</a>
+    <a class="sidebar-link" href="{% url 'openParti' %}">C:\</a>
+    <a class="sidebar-link" href="{% url 'openParti' %}">D:\</a>
+    <a class="sidebar-link" href="#">To the Top</a>
+    <a class="sidebar-link" onclick="goBack()">Previous Directory</a>
+    <a class="sidebar-link" onclick="goForward()">Next Directory</a>
+
+
+    <script>
+  function goBack() {
+    history.back();
+  }
+  function goForward() {
+    history.forward();
+  }
+</script>
+
+<!-- Add more sidebar links as needed -->
+  </div>
+
+  <div class="container" style="margin-left: 300px;">
+    <div class="row">
+      <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">{{root}}</a></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div class="row">
+      {% for folder in folders %}
+      <div class="col-md-3">
+        <div class="folder">
+          <a href="{% url 'openPartiSpec2' fName0=root fName1=folder %}">
+          <img src="/media/icons/folder.png" alt="Folder">
+          <div class="folder-name">{{ folder }}</div>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+      {% for file in files %}
+      <div class="col-md-3">
+        <div class="folder">
+          <a href="{% url 'openPartiSpec2' fName0=root fName1=file %}">
+          <img src="/media/icons/file.png" alt="Folder">
+          <div class="folder-name">{{ file }}</div>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

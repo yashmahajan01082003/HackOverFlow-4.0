@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Manager</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #343a40; /* Set dark background color */
+      color: #f8f9fa; /* Set text color to light */
+            cursor: url('/media/wallpaper/cursor.png'), auto;
+
+    }
+
+    .navbar-dark {
+      background-color: #000; /* Set completely black background color for the navbar */
+    }
+
+    .folder {
+      width: 100%; /* Set the width to 100% */
+      width: 250px; /* Set maximum width for larger screens */
+      height: 150px; /* Set a fixed height for the folders */
+      padding: 30px;
+      border: 1px solid #444; /* Update border color to a darker shade */
+      background-color: #212529; /* Set dark background color for the folders */
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 10px; /* Set margin for the folders */
+      border-radius: 10px; /* Increase border-radius for folders */
+    }
+
+    .folder img {
+      width: 60px; /* Updated to reduce the size */
+      height: 60px; /* Updated to reduce the size */
+      margin-bottom: 10px;
+    }
+
+    .folder-name {
+      font-weight: bold;
+      color: #f8f9fa; /* Set text color to light */
+      overflow: hidden;
+      padding: 10px;
+      word-wrap: break-word; /* Add word-wrap property for text wrapping */
+      max-height: 3.6em; /* Limit the maximum height for the folder name */
+      line-height: 1.2em; /* Set line-height for better readability */
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .col-md-3 {
+      padding: 10px; /* Apply padding to each column to create equal margins */
+    }
+
+    .breadcrumb {
+      background-color: transparent;
+      padding: 8px 0;
+      margin-bottom: 20px;
+      list-style: none;
+      border-radius: 5px; /* Add border-radius to breadcrumbs */
+    }
+
+    .breadcrumb-item {
+      display: inline-block;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '/';
+      position: absolute;
+      right: -5px;
+      color: #777;
+    }
+
+    .breadcrumb-item:hover {
+      text-decoration: underline;
+    }
+
+    .breadcrumb-item.active {
+      color: #777;
+      font-weight: bold;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 20px; /* Increase margin top for the sidebar */
+      left: 20px; /* Increase margin left for the sidebar */
+      bottom: 20px; /* Increase margin bottom for the sidebar */
+      width: 250px;
+      padding-top: 20px;
+      background-color: #000; /* Set completely black background color for the sidebar */
+      border-radius: 15px; /* Increase border-radius for the sidebar */
+      margin-right: 30px; /* Add margin right for the sidebar */
+    }
+
+    .sidebar-link {
+      color: #f8f9fa; /* Set text color to light */
+      text-decoration: none;
+      padding: 10px;
+      display: block;
+    }
+
+    .sidebar-link:hover {
+      background-color: #f8f9fa; /* Set light background color on hover */
+      color: #343a40; /* Set text color to dark on hover */
+    }
+
+    .breadcrumb-item a {
+      color: #fff; /* Set breadcrumb link color to white */
+      text-decoration: none;
+    }
+
+    .taskbar-icon {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      transition: transform 2s;
+    }
+
+    .taskbar-icon:hover {
+      transform: scale(2);
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <a class="sidebar-link" href="#">Home</a>
+    <a class="sidebar-link" href="#">Files</a>
+    <a class="sidebar-link" href="#">Photos</a>
+    <a class="sidebar-link" href="#">Documents</a>
+    <!-- Add more sidebar links as needed -->
+  </div>
+
+  <div class="container" style="margin-left: 300px;">
+    <nav class="navbar navbar-dark">
+      <a class="navbar-brand" href="#">File Manager</a>
+    </nav>
+
+    <div class="row">
+      <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">{{root}}</a></li>
+            <li class="breadcrumb-item"><a href="#">{{parent1}}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{parent2}}</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div class="row">
+      {% for folder in folders %}
+      <div class="col-md-3">
+        <div class="folder">
+          <img src="/media/icons/folder.png" alt="Folder">
+          <div class="folder-name">{{ folder }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

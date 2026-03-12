@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Voice Path Navigator</title>
+        <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f7;
+      padding: 30px;
+    }
+
+    h1 {
+      margin-bottom: 15px;
+    }
+
+    .container {
+      max-width: 600px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #2563eb;
+      color: white;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    ul {
+      margin-top: 15px;
+      padding-left: 20px;
+    }
+        </style>
+    </head>
+    <body>
+        <h1>Voice Path Navigator</h1>
+        <div class="container">
+            <button onclick="connectFile()">Connect routes.json</button>
+            <button onclick="listenSource()">Speak Source</button>
+            <button onclick="listenDestination()">Speak Destination</button>
+            <button onclick="startNavigation()">Start Navigation</button>
+            <div class="status" id="status"></div>
+            <ul id="pathList"></ul>
+        </div>
+        <script>
+  let routes = [];
+  let source = "";
+  let destination = "";
+  let recognition;
+
+  if ("webkitSpeechRecognition" in window) {
+    recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+  } else {
+    alert("Speech Recognition not supported in this browser");
+  }
+
+  async function connectFile() {
+    try {
+      const [fileHandle] = await window.showOpenFilePicker({
+        types: [{
+          description: "JSON File",
+          accept: { "application/json": [".json"] }
+        }]
+      });
+
+      const file = await fileHandle.getFile();
+      routes = JSON.parse(await file.text());
+
+      speak("Routes file connected");
+      document.getElementById("status").textContent =
+        "routes.json loaded";
+    } catch {
+      alert("Failed to load routes.json");
+    }
+  }
+
+  function listenSource() {
+    recognition.start();
+    document.getElementById("status").textContent = "Listening for source...";
+
+    recognition.onresult = event => {
+      source = event.results[0][0].transcript.trim();
+      document.getElementById("status").textContent =
+        "Source: " + source;
+      speak("Source set to " + source);
+    };
+  }
+
+  function listenDestination() {
+    recognition.start();
+    document.getElementById("status").textContent = "Listening for destination...";
+
+    recognition.onresult = event => {
+      destination = event.results[0][0].transcript.trim();
+      document.getElementById("status").textContent =
+        "Destination: " + destination;
+      speak("Destination set to " + destination);
+    };
+  }
+
+  function startNavigation() {
+    if (!routes.length) {
+      speak("Please connect routes file");
+      return;
+    }
+
+    if (!source || !destination) {
+      speak("Please speak both source and destination");
+      return;
+    }
+
+    const route = routes.find(
+      r =>
+        r.source.toLowerCase() === source.toLowerCase() &&
+        r.destination.toLowerCase() === destination.toLowerCase()
+    );
+
+    if (!route) {
+      speak("No route found");
+      return;
+    }
+
+    renderPath(route.path);
+    speakPath(route.path);
+  }
+
+  function renderPath(path) {
+    const list = document.getElementById("pathList");
+    list.innerHTML = "";
+
+    path.forEach(step => {
+      const li = document.createElement("li");
+      li.textContent =
+        step.action === "walk"
+          ? `Walk for ${step.duration} seconds`
+          : `Turn ${step.action}`;
+      list.appendChild(li);
+    });
+  }
+
+  function speakPath(path) {
+    window.speechSynthesis.cancel();
+
+    let index = 0;
+
+    function speakNext() {
+      if (index >= path.length) {
+        speak("You have arrived at your destination");
+        return;
+      }
+
+      const step = path[index];
+      const text =
+        step.action === "walk"
+          ? `Walk for ${step.duration} seconds`
+          : `Turn ${step.action}`;
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.9;
+
+      utterance.onend = () => {
+        index++;
+        speakNext();
+      };
+
+      speechSynthesis.speak(utterance);
+    }
+
+    speakNext();
+  }
+
+  function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(utterance);
+  }
+        </script>
+    </body>
+</html>

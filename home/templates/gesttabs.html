@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Background Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+
+    <style>
+        body {
+            background-image: url('/media/wallpaper/radhakanha2.jpg');
+            background-size: cover;
+            background-color:black;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            height: 100vh;
+        }
+
+
+        /* Background Image */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/media/wallpaper/radhakanha2.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.6; /* Adjust the opacity for the translucent effect */
+            z-index: -1;
+        }
+
+        /* Black Translucent Layer */
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0.4; /* Adjust the opacity for the translucent effect */
+            z-index: -1;
+        }
+
+        .card {
+            flex: 1;
+            color: #FFF;
+            aspect-ratio: 1.9/1;
+            border: 2px solid #33333;
+            border-radius: 25px;
+            margin: 5px;
+            width: 250px; /* Updated card width */
+            padding: 5px;
+            background-color: black; /* Darker background color */
+        }
+
+        .card-title {
+            color: #FFF;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .h-text {
+            color: red;
+        }
+
+        a {
+            display: inline-block;
+            padding: 5px 20px;
+            background-color: #F54C49;
+            color: #FFFFFF;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 10px;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #FB9B40;
+        }
+
+        .outer-div {
+            width: 75%;
+            margin: 0 auto;
+            margin-bottom: 70px;
+            padding: 20px 0px 0px 0px;
+            height: 200px;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .table {
+            border-radius: 20px;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .table tbody {
+            max-height: 10px;
+            border: 2px solid #e9ecef;
+            overflow-y: auto;
+        }
+
+        .card-img-top {
+            max-width: 230px; /* Smaller image width */
+            max-height: 200px; /* Greater image height */
+            border-radius: 25px;
+        }
+
+        .card-body {
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 18px;
+        }
+
+        .card-text {
+            font-size: 12px;
+        }
+
+        h1 {
+            color: #FFFFFF;
+            font-family: 'Arial', sans-serif;
+            font-size: 36px;
+            font-weight: bold;
+            padding: 10px 0;
+        }
+
+        /* Additional styles for dark-themed webpage */
+        .dark-mode {
+            background-color: #141414; /* Slightly darker shade of black */
+            color: #FFFFFF;
+        }
+
+        /* Override Bootstrap default styles for card */
+        .card-dark {
+            border-color: #666666;
+            background-color: #333333;
+        }
+
+        .card-title-dark {
+            color: #FFFFFF;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .card-text-dark {
+            color: #FFFFFF;
+        }
+
+        .btn-dark {
+            background-color: #666666;
+            color: #FFFFFF;
+        }
+
+        .btn-dark:hover {
+            background-color: #888888;
+        }
+
+    </style>
+</head>
+<body class="dark-mode">
+    <center>
+        <h4 style="margin:0px 0px 10px 0px;">Information about Gestures and Functions</h4>
+    </center>
+
+    <div class="container">
+        <div class="row">
+            {% for handgest in HandGest1 %}
+            <div class="col-md-4">
+                <div class="card card-dark" style="background-color:black;">
+                    <center><img src="{{ handgest.img.url }}" alt="{{ handgest.name }}" class="card-img-top"></center>
+                    <div class="card-body">
+                        <h5 class="card-title card-title-dark">{{ handgest.name }}</h5>
+                        <p class="card-text card-text-dark">{{ handgest.func }}</p>
+                    </div>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:3 %}
+        </div>
+        <div class="row">
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <center><a href="{% url 'execHandTab' %}" class="btn btn-dark">Execute Program</a></center>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

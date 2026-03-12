@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Path → JSON Builder</title>
+        <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 30px;
+    }
+
+    h1 {
+      margin-bottom: 15px;
+    }
+
+    .container {
+      max-width: 750px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 12px;
+      display: block;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .step-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .step-row select,
+    .step-row input {
+      flex: 1;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    ul {
+      margin-top: 15px;
+      padding-left: 20px;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 20px;
+      overflow-x: auto;
+      max-height: 300px;
+    }
+        </style>
+    </head>
+    <body>
+        <h1>Path → JSON Builder</h1>
+        <div class="container">
+            <button onclick="connectFile()">Connect routes.json</button>
+            <label>Source</label>
+            <input id="source" placeholder="e.g. Home">
+            <label>Destination</label>
+            <input id="destination" placeholder="e.g. Office">
+            <label>Add Path Step</label>
+            <div class="step-row">
+                <select id="action" onchange="toggleDuration()">
+                    <option value="">Select action</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value="walk">Walk</option>
+                </select>
+                <input
+                    id="duration"
+                    type="number"
+                    min="1"
+                    placeholder="Duration (seconds)"
+                    style="display:none"
+                >
+            </div>
+            <button onclick="addStep()">Add Step</button>
+            <ul id="stepList"></ul>
+            <button onclick="addRoute()">Add Route (Append to File)</button>
+            <pre id="output"></pre>
+        </div>
+        <script>
+  let routes = [];
+  let currentSteps = [];
+  let fileHandle = null;
+
+  async function connectFile() {
+    try {
+      [fileHandle] = await window.showOpenFilePicker({
+        types: [
+          {
+            description: "JSON File",
+            accept: { "application/json": [".json"] }
+          }
+        ]
+      });
+
+      const file = await fileHandle.getFile();
+      const text = await file.text();
+
+      routes = text ? JSON.parse(text) : [];
+      renderJSON();
+
+      alert("routes.json connected successfully");
+    } catch (err) {
+      alert("File selection cancelled or unsupported browser");
+    }
+  }
+
+  function toggleDuration() {
+    const action = document.getElementById("action").value;
+    const durationInput = document.getElementById("duration");
+
+    durationInput.style.display = action === "walk" ? "block" : "none";
+    if (action !== "walk") durationInput.value = "";
+  }
+
+  function addStep() {
+    const action = document.getElementById("action").value;
+    const duration = document.getElementById("duration").value;
+
+    if (!action) {
+      alert("Select an action");
+      return;
+    }
+
+    if (action === "walk") {
+      if (!duration || duration <= 0) {
+        alert("Enter valid duration");
+        return;
+      }
+      currentSteps.push({
+        action: "walk",
+        duration: Number(duration)
+      });
+    } else {
+      currentSteps.push({ action });
+    }
+
+    renderSteps();
+
+    document.getElementById("action").value = "";
+    document.getElementById("duration").value = "";
+    document.getElementById("duration").style.display = "none";
+  }
+
+  function renderSteps() {
+    const list = document.getElementById("stepList");
+    list.innerHTML = "";
+
+    currentSteps.forEach(step => {
+      const li = document.createElement("li");
+      li.textContent =
+        step.action === "walk"
+          ? `walk → ${step.duration} sec`
+          : step.action;
+      list.appendChild(li);
+    });
+  }
+
+  async function addRoute() {
+    if (!fileHandle) {
+      alert("Connect routes.json first");
+      return;
+    }
+
+    const source = document.getElementById("source").value.trim();
+    const destination = document.getElementById("destination").value.trim();
+
+    if (!source || !destination || currentSteps.length === 0) {
+      alert("Fill source, destination, and steps");
+      return;
+    }
+
+    routes.push({
+      source,
+      destination,
+      path: currentSteps
+    });
+
+    const writable = await fileHandle.createWritable();
+    await writable.write(JSON.stringify(routes, null, 2));
+    await writable.close();
+
+    currentSteps = [];
+    renderSteps();
+    renderJSON();
+
+    document.getElementById("source").value = "";
+    document.getElementById("destination").value = "";
+  }
+
+  function renderJSON() {
+    document.getElementById("output").textContent =
+      JSON.stringify(routes, null, 2);
+  }
+        </script>
+    </body>
+</html>

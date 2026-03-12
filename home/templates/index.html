@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Windows Desktop</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      background-image: url('/media/wallpaper/radhakanha2.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      cursor: url('/media/wallpaper/cursor.png'), auto;
+    }
+
+    #desktop-icons {
+      cursor: url('/media/wallpaper/cursor.png'), auto;
+      position: absolute;
+      top: 80px; /* Adjust the top position to make space for the top navbar */
+      left: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 20px;
+      justify-items: center; /* Align icons in the center */
+      cursor: url('/media/wallpaper/cursor.png'), auto;
+    }
+
+    .icon {
+      width: 85px;
+      height: 85px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+            cursor: url('/media/wallpaper/cursor.png'), auto;
+
+      justify-content: center;
+    }
+
+    .icon img {
+      width: 75px;
+      height: 75px;
+      margin-bottom: 5px;
+      transition: transform 2s;
+
+      cursor: url('/media/wallpaper/cursor.png'), auto;
+    }
+
+    .icon:hover img {
+      transform: rotate(360deg);
+            cursor: url('/media/wallpaper/cursor.png'), auto;
+
+    }
+
+    .icon span {
+      font-size: 12px;
+      text-align: center;
+      color: white;
+            cursor: url('/media/wallpaper/cursor.png'), auto;
+
+      text-shadow: 0 0 1px black,0 0 1px black,0 0 1px black,0 0 1px black,0 0 1px black,0 0 1px black,0 0 1px black,0 0 1px black,0 0 1px black,0 0 1px black;
+    }
+
+    #taskbar {
+          cursor: url('/media/wallpaper/cursor.png'), auto;
+  position: fixed;
+  bottom: 10px;
+  left: 150px; /* Add left margin */
+  right: 150px; /* Add right margin */
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.8); /* Translucent white color */
+  border-radius: 30px; /* Add border radius */
+  display: flex;
+        cursor: url('/media/wallpaper/cursor.png'), auto;
+
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  font-size: 14px;
+}
+
+
+    .taskbar-icon {
+      width: 35px;
+      height: 35px;
+      margin-right: 20px;
+            cursor: url('/media/wallpaper/cursor.png'), auto;
+                  cursor: url('/media/wallpaper/cursor.png'), auto;
+
+
+    }
+
+    .taskbar-icon img {
+      width: 100%;
+      height: 100%;
+            cursor: url('/media/wallpaper/cursor.png'), auto;
+
+    }
+
+    #Bicon{
+      transition: transform 2s ease;
+      cursor: url('/media/wallpaper/cursor.png'), auto;
+    }
+
+    #Bicon:hover{
+      cursor: url('/media/wallpaper/cursor.png'), auto;
+      transform: translate(10px, -100px) scale(4);
+    }
+
+    .taskbar-menu {
+      display: flex;
+      align-items: center;
+            cursor: url('/media/wallpaper/cursor.png'), auto;
+
+    }
+
+    .taskbar-menu-item {
+      margin-right: 10px;
+      color: white;
+    }
+
+    .datetime-container {
+      display: flex;
+      align-items: center;
+      border-right: 1px solid white;
+      padding-right: 10px;
+            cursor: url('/media/wallpaper/cursor.png'), auto;
+
+    }
+
+    .date,
+    .time {
+      padding: 0 5px;
+    }
+
+ body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      background-image: url('/media/wallpaper/radhakanha2.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      cursor: url('/media/wallpaper/cursor.png'), auto;
+    }
+
+     #top-navbar {
+      position: fixed;
+      top: 10px;
+      left: 30px;
+      right: 30px;
+      height: 30px;
+      background-color: rgba(0, 0, 0, 0.8); /* Translucent white color */
+      border-radius: 15px; /* Add border radius */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 12px;
+      z-index: 999;
+      cursor: url('/media/wallpaper/cursor.png'), auto;
+    }
+
+    .navbar-menu {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-menu-item {
+      margin-right: 10px;
+      color: white;
+    }
+
+    .datetime-container {
+      display: flex;
+      align-items: center;
+      border-right: 1px solid white;
+      padding-right: 10px;
+    }
+
+    .date,
+    .time {
+      padding: 0 5px;
+    }
+
+    .popup-list {
+      display: flex;
+      align-items: center;
+    }
+
+    .popup-list-item {
+      color: white;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+
+    #top-navbar .navbar-menu {
+      display: flex;
+      align-items: center;
+    }
+
+    #top-navbar .navbar-menu-item {
+      margin-right: 10px;
+      color: white;
+    }
+
+    #top-navbar .datetime-container {
+      display: flex;
+      align-items: center;
+      border-right: 1px solid white;
+      padding-right: 10px;
+    }
+
+    #top-navbar .date,
+    #top-navbar .time {
+      padding: 0 5px;
+    }
+
+    .btnvm{
+        background-color:green;
+        color:white;
+        padding : 5px;
+        font-size: 10px;
+        border-radius : 5px;
+    }
+    .btnvm2{
+        background-color:red;
+        color:white;
+        padding : 5px;
+        font-size: 10px;
+        border-radius : 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="top-navbar">
+
+    <div class="navbar-menu" style="justify-content : center; align-items: center;">
+      <div class="navbar-menu-item"><img src="media/wallpaper/krishna.png" height="20px" width="20px" style="display:none;"> </div>
+
+    </div>
+    <div class="navbar-menu" style="justify-content : center; align-items: center;">
+      <div class="navbar-menu-item">Battery Power: {{perc}}%  |</div>
+    </div>
+    <div class="navbar-menu" style="justify-content : center; align-items: center;">
+      <div class="navbar-menu-item">Battery Status: {{status}} |</div>
+    </div>
+  <!-- Taskbar code omitted for brevity -->
+
+       <div class="navbar-menu" style="justify-content : center; align-items: center;">
+      <div class="navbar-menu-item"><a class="btnvm" href="{% url 'activateVM' %}">Enable Virtual Mouse</a></div>
+    </div>
+
+       <div class="navbar-menu" style="justify-content : center; align-items: center;">
+      <div class="navbar-menu-item"><a class="btnvm" href="{% url 'activateRM' %}">Enable Retina Mouse</a></div>
+    </div>
+
+ <div class="navbar-menu" style="justify-content : center; align-items: center;">
+      <div class="navbar-menu-item"><a class="btnvm" href="{% url 'execHand' %}">Enable Hand Based Tabs</a></div>
+    </div>
+
+
+
+  <div class="navbar-menu" style="justify-content: center; align-items: center;">
+  <select id="New1" style="color: white; background-color: rgba(0, 0, 0, 0.8);">
+    <option value="option1">New</option>
+    <option value="option2">New Folder</option>
+    <option value="option3">New File</option>
+  </select>
+</div>
+
+<form action="{% url 'newD' %}" id="form1" method="get" style="display: none; color:white; margin-top:200px; background-color: rgba(0, 0, 0, 0.8); border-radius:10px; padding:10px;">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" style="color:white; background-color: rgba(0, 0, 0, 0.8); border-radius:10px;" required>
+  <br><br>
+      <input type="text" id="flag" name="flag" style="display:none;">
+  <input type="submit" style="border-radius:10px;" value="Submit">
+</form>
+
+<script>
+  // Function to toggle the visibility and position of the form
+  function toggleFormVisibility() {
+    var form = document.getElementById('form1');
+    var select = document.getElementById('New1');
+
+    if (select.value === 'option2') {
+      form.style.display = 'block'; // Show the form
+      document.getElementById("flag").value = "2";
+      console.log(document.getElementById("flag").value)
+      form.style.marginTop = '120px'; // Adjust the margin to position the form below "New Folder"
+    }
+     else if (select.value === 'option3') {
+      form.style.display = 'block'; // Show the form
+      document.getElementById("flag").value = "3";
+      form.style.marginTop = '120px'; // Adjust the margin to position the form below "New Folder"
+    }
+
+     else {
+      form.style.display = 'none'; // Hide the form
+      form.style.marginTop = '10px'; // Reset the margin when the form is hidden
+    }
+  }
+
+  // Add event listener to the select element
+  document.getElementById('New1').addEventListener('change', toggleFormVisibility);
+</script>
+
+ <div class="navbar-menu" style="justify-content : center; align-items: center;">
+
+
+  <!-- Add any other elements or content here -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+  </script>
+
+    </div>
+
+    <div class="navbar-menu">
+      <div class="datetime-container">
+        <div class="date" id="date"></div>
+        <div class="time" id="time"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="desktop-icons">
+    {% for folder in folders %}
+    <div class="icon">
+      <a href="{% url 'openDesktopD' fName=folder %}">
+        <img src="/media/icons/folder2.png" alt="Folder">
+      </a>
+      <span>{{ folder }}</span>
+    </div>
+    {% endfor %}
+    {% for icon in Icon %}
+    <div class="icon">
+      <a href="{% url 'openParti' %}">
+        <img src="{{icon.image.url}}" alt="Folder">
+      </a>
+      <span>{{ icon.name }}</span>
+    </div>
+    {% endfor%}
+  </div>
+
+  <div id="taskbar">
+    <div class="taskbar-menu">
+      {% for BIcon in BIcons %}
+      <div class="taskbar-icon">
+        <a href="{% url 'BSIcons' fName=BIcon.name %}">
+          <img id='Bicon' src="{{BIcon.image.url}}" alt="Icon 1">
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Add any other elements or content here -->
+
+  <script>
+    // Function to update the date and time
+    function updateTime() {
+      var dateTime = new Date();
+      var date = dateTime.toDateString();
+      var time = dateTime.toLocaleTimeString();
+      document.getElementById('date').innerHTML = date;
+      document.getElementById('time').innerHTML = time;
+    }
+
+    // Call theupdateTime function to display the initial date and time
+    updateTime();
+
+    // Update the date and time every second
+    setInterval(updateTime, 1000);
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Add any JavaScript code here if needed
+  </script>
+</body>
+</html>
